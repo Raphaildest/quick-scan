@@ -21,12 +21,15 @@ export const QAQuestionnaire: React.FC<QAQuestionnaireProps> = ({
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [practicalUrl, setPracticalUrl] = useState('');
   const [aiNotes, setAiNotes] = useState('');
-  const [showOptionalBlocks, setShowOptionalBlocks] = useState(false);
+  const [isReviewStep, setIsReviewStep] = useState(false);
 
   const currentQ = questions[currentIndex];
   const total = questions.length;
   const answeredCount = Object.keys(answers).length;
   const progressPct = Math.round((answeredCount / total) * 100);
+  const unansweredIndices = questions
+    .map((q, idx) => (!answers[q.id] ? idx : null))
+    .filter((idx): idx is number => idx !== null);
 
   const dimensionBadges: Record<string, { label: string; color: string }> = {
     automacao: { label: 'Automação de Testes', color: 'bg-cyan-100 text-cyan-800 border-cyan-300' },
@@ -59,7 +62,7 @@ export const QAQuestionnaire: React.FC<QAQuestionnaireProps> = ({
     if (currentIndex < total - 1) {
       setCurrentIndex(prev => prev + 1);
     } else {
-      setShowOptionalBlocks(true);
+      setIsReviewStep(true);
     }
   };
 
@@ -67,6 +70,11 @@ export const QAQuestionnaire: React.FC<QAQuestionnaireProps> = ({
     if (currentIndex > 0) {
       setCurrentIndex(prev => prev - 1);
     }
+  };
+
+  const handleSelectQuestionPill = (idx: number) => {
+    setCurrentIndex(idx);
+    setIsReviewStep(false);
   };
 
   const handleFinalSubmit = (e: React.FormEvent) => {
@@ -113,15 +121,15 @@ export const QAQuestionnaire: React.FC<QAQuestionnaireProps> = ({
         </div>
 
         {/* Question Selector Pills */}
-        <div className="flex flex-wrap gap-1.5">
+        <div className="flex flex-wrap items-center gap-1.5">
           {questions.map((q, idx) => {
             const isAnswered = !!answers[q.id];
-            const isCurrent = idx === currentIndex;
+            const isCurrent = !isReviewStep && idx === currentIndex;
             return (
               <button
                 key={q.id}
                 type="button"
-                onClick={() => setCurrentIndex(idx)}
+                onClick={() => handleSelectQuestionPill(idx)}
                 className={`w-7 h-7 rounded-lg text-xs font-bold transition flex items-center justify-center ${
                   isCurrent
                     ? 'bg-ntt-blue text-white ring-2 ring-ntt-blue/30 shadow'
@@ -135,11 +143,25 @@ export const QAQuestionnaire: React.FC<QAQuestionnaireProps> = ({
               </button>
             );
           })}
+
+          <button
+            type="button"
+            onClick={() => setIsReviewStep(true)}
+            className={`px-3 py-1 rounded-lg text-xs font-bold transition flex items-center space-x-1 ${
+              isReviewStep
+                ? 'bg-ntt-blue text-white ring-2 ring-ntt-blue/30 shadow'
+                : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200'
+            }`}
+            title="Ir para a etapa final de revisão e envio"
+          >
+            <span>Finalização</span>
+            <ChevronRight className="w-3.5 h-3.5" />
+          </button>
         </div>
       </div>
 
-      {/* Main Question Card */}
-      {currentQ && (
+      {/* Main Question Card (Only shown when not in review step) */}
+      {!isReviewStep && currentQ && (
         <div className="bg-white rounded-2xl shadow-xl border border-slate-200 p-6 sm:p-8 space-y-6">
           <div className="flex items-center justify-between border-b border-slate-100 pb-3">
             <div className="flex items-center space-x-2">
@@ -217,10 +239,10 @@ export const QAQuestionnaire: React.FC<QAQuestionnaireProps> = ({
             ) : (
               <button
                 type="button"
-                onClick={() => setShowOptionalBlocks(true)}
-                className="flex items-center space-x-1.5 px-6 py-2.5 rounded-xl text-xs font-bold bg-emerald-700 hover:bg-emerald-800 text-white shadow-md transition"
+                onClick={() => setIsReviewStep(true)}
+                className="flex items-center space-x-1.5 px-6 py-2.5 rounded-xl text-xs font-bold bg-ntt-blue hover:bg-blue-600 text-white shadow-md transition"
               >
-                <span>Revisar e Finalizar</span>
+                <span>Avançar para Finalização</span>
                 <ChevronRight className="w-4 h-4" />
               </button>
             )}
@@ -228,20 +250,59 @@ export const QAQuestionnaire: React.FC<QAQuestionnaireProps> = ({
         </div>
       )}
 
-      {/* Optional Practical Challenge & AI Block */}
-      {showOptionalBlocks && (
-        <form onSubmit={handleFinalSubmit} className="bg-white rounded-2xl shadow-xl border border-slate-200 p-6 sm:p-8 space-y-6 animate-fade-in">
+      {/* Review & Final Submission Step */}
+      {isReviewStep && (
+        <form onSubmit={handleFinalSubmit} className="bg-white rounded-2xl shadow-xl border border-slate-200 p-6 sm:p-8 space-y-6">
           <div className="border-b border-slate-100 pb-4">
             <span className="text-[11px] font-bold uppercase tracking-wider text-ntt-blue">
-              Etapa Final • Complementos Opcionais
+              Etapa Final • Revisão & Envio
             </span>
             <h3 className="text-lg font-bold text-slate-900 mt-1">
-              Evidências Práticas de Automação & Uso de IA
+              Finalização do Assessment Técnico
             </h3>
             <p className="text-xs text-slate-500">
-              Caso possua repositório de automação ou deseje registrar como utilizou IA, preencha os campos abaixo:
+              Revise o preenchimento das questões e inclua complementos opcionais antes de enviar.
             </p>
           </div>
+
+          {/* Status Alert */}
+          {unansweredIndices.length === 0 ? (
+            <div className="flex items-start space-x-3 p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-900">
+              <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
+              <div>
+                <p className="text-xs font-bold">Excelente! Todas as {total} questões foram respondidas.</p>
+                <p className="text-[11px] text-emerald-700 mt-0.5">
+                  Você já pode confirmar o envio abaixo ou preencher as evidências opcionais.
+                </p>
+              </div>
+            </div>
+          ) : (
+            <div className="p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 space-y-2">
+              <div className="flex items-start space-x-2.5">
+                <HelpCircle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-xs font-bold">
+                    Atenção: Você possui {unansweredIndices.length} questão(ões) pendente(s) de resposta:
+                  </p>
+                  <p className="text-[11px] text-amber-700 mt-0.5">
+                    Recomendamos responder todas antes do envio para obter a pontuação completa.
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-wrap gap-1.5 pt-1 pl-7">
+                {unansweredIndices.map(unIdx => (
+                  <button
+                    key={unIdx}
+                    type="button"
+                    onClick={() => handleSelectQuestionPill(unIdx)}
+                    className="px-2.5 py-1 rounded-md text-xs font-bold bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 transition"
+                  >
+                    Responder Questão {unIdx + 1}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
 
           <div>
             <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1 flex items-center space-x-1.5">
@@ -271,7 +332,17 @@ export const QAQuestionnaire: React.FC<QAQuestionnaireProps> = ({
             />
           </div>
 
-          <div className="pt-4 flex justify-end space-x-3">
+          {/* Navigation & Submit Controls */}
+          <div className="pt-4 flex items-center justify-between border-t border-slate-100">
+            <button
+              type="button"
+              onClick={() => setIsReviewStep(false)}
+              className="flex items-center space-x-1.5 px-4 py-2.5 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition"
+            >
+              <ChevronLeft className="w-4 h-4" />
+              <span>Voltar às Questões</span>
+            </button>
+
             <button
               type="submit"
               disabled={submitting}
