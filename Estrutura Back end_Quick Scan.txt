@@ -1,0 +1,267 @@
+Hoje eles são **MVPs front-end**: interface, navegação e simulações. Para virarem portais realmente funcionais, precisamos adicionar principalmente **persistência de dados, identificação do QA e processamento das avaliações**.
+
+Eu estruturaria a evolução assim:
+
+| Componente | O que precisa fazer | Necessidade |
+|---|---|---|
+| **1. Identificação do QA** | Nome, SAP, e-mail, Gerência, Coordenação, Squad | Obrigatório |
+| **2. Banco de dados** | Guardar respostas, scores, status e resultados | Obrigatório |
+| **3. Assessment** | Perguntas, alternativas, pesos e gabaritos | Obrigatório |
+| **4. Scoring** | Calcular Automation, AI, Engineering etc. | Obrigatório |
+| **5. Desafio prático** | Receber código/arquivo ou link Git | Recomendado |
+| **6. Avaliação do código** | Aplicar rubrica e gerar score/evidências | Recomendado |
+| **7. IA** | Avaliar respostas abertas/código e gerar análise | Fase seguinte |
+| **8. Dashboard** | Ler os resultados reais automaticamente | Obrigatório |
+| **9. Scan anterior** | Importar resultado anterior para comparação | Obrigatório |
+| **10. Segurança/login** | Controlar quem responde e quem vê resultados | Produção |
+
+### Uma arquitetura simples para começarmos
+
+Eu evitaria Power Automate e Forms completamente.
+
+Podemos fazer:
+
+**Portal HTML/JavaScript → API → Banco de dados**
+
+e o dashboard consulta exatamente o mesmo banco:
+
+**Banco → Portal Analytics**
+
+Para um piloto, temos algumas opções de backend. Uma solução particularmente simples seria **Supabase**, porque já nos entrega banco PostgreSQL, autenticação, APIs e armazenamento de arquivos. Outra possibilidade seria uma arquitetura Microsoft/Azure, que provavelmente fará mais sentido caso isso precise entrar posteriormente no ambiente corporativo.
+
+### O fluxo ficaria muito melhor
+
+O QA recebe um link e entra no portal.
+
+**1. Identificação**
+
+```text
+SAP: 123456
+Nome: Maria Silva
+Gerência: Engenharia de Software VI
+Coordenação: Investimentos e Previdência I
+```
+
+Idealmente, Gerência e Coordenação nem seriam digitadas: ao informar o SAP, o portal recuperaria a estrutura cadastrada.
+
+**2. Assessment**
+
+O sistema apresenta, por exemplo, **25 questões**, sorteadas de um banco maior:
+
+- 8 Automação
+- 5 Engenharia/Código
+- 4 CI/CD e Massa
+- 3 Fundamentos de Qualidade
+- 5 IA aplicada
+
+As questões podem variar entre profissionais, diminuindo o compartilhamento de respostas.
+
+**3. Desafio prático**
+
+Aqui podemos deixar algo como:
+
+> Você recebeu uma aplicação contendo Login → Consulta → Resultado.
+>
+> Crie uma automação para os cenários que considerar prioritários.
+>
+> É permitido utilizar IA.
+
+O QA poderia enviar:
+
+**Link GitHub/GitLab** ou **ZIP/código diretamente pelo portal**.
+
+E responder:
+
+> Qual IA você utilizou?
+>
+> Como ela ajudou?
+>
+> Qual sugestão da IA você rejeitou e por quê?
+
+### Depois entra a parte mais interessante
+
+Ao clicar em:
+
+**FINALIZAR QUICK SCAN**
+
+o backend calcula automaticamente:
+
+```text
+Automation Readiness     82%
+AI Readiness             91%
+Engineering Readiness    74%
+CI/CD & Data             65%
+Quality Fundamentals     88%
+
+QUICK SCAN SCORE          80%
+```
+
+E classifica, por exemplo:
+
+**ALTO**
+
+Depois cruza com:
+
+```text
+SCAN ANTERIOR
+Médio
+```
+
+Resultado:
+
+**Evolução identificada**
+
+E isso aparece imediatamente no segundo portal.
+
+---
+
+### No portal de gestão
+
+Você poderia selecionar:
+
+**Gerência VI → Coordenação X**
+
+e visualizar algo como:
+
+**12 QAs**
+
+`4 Alto | 6 Médio | 2 Baixo`
+
+Além disso:
+
+**Scan anterior:** 61% aptos  
+**Quick Scan:** 83% aptos  
+**Evolução:** +22 p.p.
+
+E abrir cada profissional:
+
+```text
+Maria Silva
+
+Scan anterior:       Médio
+Quick Scan:          Alto
+
+Automação            88%
+IA                    94%
+Engenharia            81%
+CI/CD                 72%
+
+Código:               86%
+
+Recomendação:
+MANTER / POTENCIAL HABILITADOR
+```
+
+---
+
+## Mas eu acrescentaria uma terceira coisa aos dois HTMLs
+
+Em vez de termos somente:
+
+**Portal Quick Scan**  
+**Portal Analytics**
+
+eu criaria dentro do Analytics um módulo:
+
+### Accelerate
+
+Esse módulo seria utilizado pelos **2 profissionais do Accelerate Team**.
+
+Eles selecionariam:
+
+**Gerência → Coordenação → Squad**
+
+e preencheriam o diagnóstico:
+
+```text
+Stack
+Robot Framework
+Playwright
+Cypress
+Selenium
+...
+
+Cobertura atual
+Web        40%
+API        20%
+Mobile      0%
+
+Regressivo
+120 cenários
+
+Automatizados
+48
+
+Pipeline
+Sim / Não
+
+Massa automatizada
+Sim / Não
+```
+
+Depois:
+
+### Oportunidades
+
+☑ Automação API  
+☑ Automação Web  
+☐ Mobile  
+☑ Massa de dados  
+☑ Pipeline  
+☑ IA para geração de CT  
+☑ IA para manutenção de automações  
+☐ Performance
+
+E finalmente:
+
+**Gerar Plano de Aceleração**
+
+Assim seu sistema começa a conectar as duas perspectivas:
+
+**PESSOAS**
+
+Quick Scan → Aptidão → Skills → Gap → Manter/Treinar/Substituir
+
++
+
+**TECNOLOGIA**
+
+Squad → Stack → Regressivo → Cobertura → Gap → Automação/IA
+
+=
+
+### Plano de ação
+
+Por exemplo:
+
+> **Coordenação Meios de Pagamentos II**
+>
+> 14 QAs | 3 squads
+>
+> **Pessoas:** 6 Alto / 5 Médio / 3 Baixo  
+> **Automação:** 42%  
+> **Principal gap:** API e massa  
+> **IA:** baixa utilização  
+>
+> **Ação recomendada:**  
+> Manter 11 QAs  
+> Avaliar substituição de 3  
+> Habilitar 5 em API  
+> Implantar automação de massa  
+> Introduzir Quality Agents  
+> Meta: 70% de cobertura em 90 dias
+
+Isso já começa a virar o **sistema de gestão do projeto**, e não apenas uma ferramenta de assessment.
+
+### O que eu preciso de você para construir a próxima versão funcional
+
+Não precisamos ter todas as respostas agora. Para o primeiro piloto, consigo assumir algumas regras e deixar tudo parametrizável. Precisaria principalmente de:
+
+1. **Lista dos QAs**, idealmente Excel com SAP, Nome, Gerência, Coordenação e Squad.
+2. **Resultado do Scan anterior**, se você tiver a base.
+3. Definirmos se inicialmente o desafio será focado em **Robot Framework, Playwright ou independente de framework**.
+4. Onde você pretende rodar o piloto: **somente local**, servidor NTT/Sicredi ou alguma hospedagem permitida.
+
+Com isso, consigo evoluir o que já criamos para uma solução em que **o QA responde → resultado é salvo → score é calculado → dashboard atualiza → Líder analisa → Accelerates registram diagnóstico → plano de ação é consolidado**.
+
+Para o piloto, inclusive, podemos fazer uma primeira versão funcional **sem infraestrutura corporativa definitiva** e depois migrar a arquitetura quando o conceito estiver validado.

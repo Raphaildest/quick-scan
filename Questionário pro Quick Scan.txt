@@ -1,0 +1,638 @@
+Sim. Eu estruturaria o **Quick Scan em 3 blocos**, para não depender de autoavaliação: **Assessment objetivo + Desafio prático de Automação + Desafio de IA aplicada**. A ideia é conseguir executar em aproximadamente **90–120 minutos por QA**, sem entrevista obrigatória.
+
+Abaixo está uma versão completa que já pode virar o conteúdo do portal.
+
+# Quick Scan — Quality Engineering, Automação & IA
+
+## Estrutura de avaliação
+
+| Dimensão | Instrumento | Peso |
+|---|---|---:|
+| Fundamentos de Qualidade | Assessment | 10% |
+| Automação de Testes | Assessment + desafio | 30% |
+| Engenharia / Código | Assessment + desafio | 20% |
+| CI/CD e Massa de Dados | Assessment | 10% |
+| IA aplicada à Qualidade | Assessment + desafio | 20% |
+| Análise crítica / decisão | Desafios | 10% |
+| **Total** | | **100%** |
+
+Eu evitaria perguntas excessivamente específicas de Robot, Playwright ou Selenium. O objetivo é identificar **capacidade de engenharia**, independentemente da ferramenta.
+
+---
+
+# BLOCO 1 — Assessment técnico
+
+**Tempo sugerido: 25–30 minutos**
+
+## A. Fundamentos de Qualidade
+
+### 1. Priorização baseada em risco
+
+Uma funcionalidade de transferência bancária será alterada. O prazo de testes é limitado. Qual estratégia você adotaria?
+
+**A)** Executar todos os testes existentes na mesma prioridade.  
+**B)** Priorizar cenários considerando impacto, probabilidade de falha, criticidade e áreas afetadas.  
+**C)** Executar apenas testes de interface.  
+**D)** Executar somente os testes automatizados.
+
+**Resposta esperada:** B
+
+---
+
+### 2. Pirâmide de testes
+
+Um fluxo possui validações que podem ser realizadas tanto via API quanto via interface Web. Qual estratégia tende a ser mais eficiente?
+
+**A)** Automatizar tudo pela UI.  
+**B)** Automatizar tudo manualmente primeiro.  
+**C)** Colocar o máximo de validações adequadas nas camadas inferiores e manter na UI principalmente o necessário para validar a jornada.  
+**D)** Duplicar os mesmos testes em API e UI.
+
+**Resposta:** C
+
+---
+
+### 3. Regressão
+
+Um sistema possui 600 cenários regressivos manuais. Qual deveria ser o primeiro passo antes de automatizá-los?
+
+**A)** Automatizar todos.  
+**B)** Selecionar os mais fáceis.  
+**C)** Analisar criticidade, frequência, estabilidade, valor, redundância e adequação à automação.  
+**D)** Automatizar apenas os cenários felizes.
+
+**Resposta:** C
+
+---
+
+### 4. Bug em produção
+
+Uma funcionalidade passou por todos os testes definidos, mas apresentou defeito crítico em produção. Qual ação gera mais aprendizado?
+
+**A)** Aumentar simplesmente a quantidade de testes.  
+**B)** Investigar a causa da fuga, identificar a lacuna de cobertura e atualizar estratégia/testes.  
+**C)** Responsabilizar quem executou os testes.  
+**D)** Adicionar o caso exclusivamente à regressão manual.
+
+**Resposta:** B
+
+---
+
+# B. Automação de Testes
+
+### 5. Escolha de automação
+
+Qual cenário apresenta maior potencial inicial para automação?
+
+**A)** Processo executado uma vez por ano.  
+**B)** Fluxo que muda semanalmente.  
+**C)** Regressão crítica executada em todas as releases.  
+**D)** Teste exploratório sem comportamento previamente definido.
+
+**Resposta:** C
+
+---
+
+### 6. Flaky tests
+
+Uma suíte apresenta falhas intermitentes. Qual seria sua primeira abordagem?
+
+**A)** Aumentar todos os sleeps.  
+**B)** Executar novamente até passar.  
+**C)** Analisar sincronização, dependências, massa, ambiente e isolamento dos testes.  
+**D)** Remover os testes que falham.
+
+**Resposta:** C
+
+---
+
+### 7. Espera fixa
+
+Você encontra:
+
+```python
+click("Entrar")
+sleep(10)
+click("Continuar")
+```
+
+Qual seria a melhor melhoria?
+
+**A)** `sleep(20)`  
+**B)** Criar uma espera baseada na condição necessária para continuar.  
+**C)** Repetir o clique.  
+**D)** Não alterar.
+
+**Resposta:** B
+
+---
+
+### 8. Reuso
+
+Há 80 testes Web repetindo o código de login. O que você faria?
+
+**A)** Manter, pois cada teste deve ser independente.  
+**B)** Criar um componente/keyword/método reutilizável para a operação.  
+**C)** Copiar o código para uma nova classe.  
+**D)** Remover o login.
+
+**Resposta:** B
+
+---
+
+### 9. API x UI
+
+Um cálculo financeiro complexo pode ser validado diretamente por API. A UI apenas apresenta o resultado.
+
+Onde concentraria os testes das regras de cálculo?
+
+**Resposta esperada:** principalmente em API/camada adequada, deixando na UI a validação necessária da integração/apresentação.
+
+Aqui eu usaria **resposta aberta curta**, porque quero avaliar o raciocínio.
+
+---
+
+### 10. Seletores
+
+Qual seletor tende a ser mais resiliente?
+
+```text
+A) /html/body/div[2]/div[3]/button
+B) .button:nth-child(4)
+C) [data-testid="confirm-transfer"]
+D) div > div > button
+```
+
+**Resposta:** C
+
+---
+
+### 11. Independência
+
+O Teste B depende de o Teste A ter sido executado com sucesso. Qual o principal problema?
+
+**Resposta aberta.**
+
+Esperado: dependência entre testes, dificuldade de paralelização, efeito cascata e baixa confiabilidade.
+
+---
+
+### 12. Cobertura
+
+A equipe afirma possuir "90% de automação". Qual informação adicional é mais importante para interpretar esse indicador?
+
+Eu deixaria múltipla escolha com possibilidade de mais de uma resposta:
+
+☑ Quais cenários estão cobertos  
+☑ Criticidade dos cenários  
+☑ Camadas onde estão automatizados  
+☑ Frequência/resultado das execuções  
+☑ Cobertura dos principais riscos  
+☐ Quantidade de linhas de código da automação
+
+---
+
+# C. Engenharia / Código
+
+### 13. Code review
+
+Você recebe este código:
+
+```python
+def test_transfer():
+    login("user1","123456")
+    click("#menu")
+    click("#transfer")
+    type("#account","12345")
+    type("#value","100")
+    click("#confirm")
+    sleep(10)
+    assert text("#message") == "Success"
+```
+
+**Pergunta:**
+
+Identifique **pelo menos 3 pontos que melhoraria**.
+
+Aqui podemos avaliar:
+
+- credenciais hardcoded;
+- massa hardcoded;
+- seletores;
+- abstração;
+- sincronização;
+- reutilização;
+- organização;
+- assertions;
+- legibilidade.
+
+---
+
+### 14. Manutenibilidade
+
+Qual característica é mais importante para uma suíte que terá milhares de cenários?
+
+**A)** Quantidade de scripts.  
+**B)** Velocidade de criação inicial.  
+**C)** Arquitetura, reutilização, legibilidade e facilidade de manutenção.  
+**D)** Uso da ferramenta mais nova.
+
+**Resposta:** C
+
+---
+
+### 15. Pull Request
+
+Uma IA gerou uma automação aparentemente correta. O que deveria acontecer antes do merge?
+
+**A)** Merge automático porque foi gerado por IA.  
+**B)** Revisão técnica, execução, validação das assertions, segurança e aderência aos padrões.  
+**C)** Apenas verificar se compila.  
+**D)** Perguntar novamente à IA se está correto.
+
+**Resposta:** B
+
+---
+
+### 16. Duplicação
+
+Você encontra dezenas de scripts com pequenas variações do mesmo fluxo. O que analisaria antes de continuar criando novos?
+
+**Resposta aberta curta.**
+
+Esperado: parametrização, abstração, componentes reutilizáveis, data-driven testing, arquitetura.
+
+---
+
+# D. CI/CD e Massa
+
+### 17. Pipeline
+
+Em qual momento os testes automatizados deveriam ser executados?
+
+**A)** Apenas antes da produção.  
+**B)** Apenas quando o QA solicitar.  
+**C)** Em diferentes gates da pipeline conforme velocidade, criticidade e finalidade da suíte.  
+**D)** Uma vez por semana.
+
+**Resposta:** C
+
+---
+
+### 18. Pipeline lenta
+
+Uma regressão automatizada leva quatro horas.
+
+O que você avaliaria?
+
+☑ Paralelização  
+☑ Testes duplicados  
+☑ Distribuição entre UI/API  
+☑ Priorização baseada em risco  
+☑ Dependências  
+☑ Massa  
+☑ Infraestrutura  
+☐ Apenas aumentar timeout
+
+---
+
+### 19. Massa de dados
+
+Uma suíte falha frequentemente porque os usuários utilizados já estão bloqueados ou tiveram seus estados alterados.
+
+Qual seria uma solução estrutural?
+
+**Resposta aberta.**
+
+Esperado: geração/reset automatizado de massa, APIs/utilitários de preparação, isolamento, controle do estado.
+
+---
+
+### 20. Gate
+
+Um teste crítico da jornada de pagamento falha na pipeline.
+
+Qual deveria ser o comportamento?
+
+**Resposta aberta.**
+
+Aqui quero avaliar se o QA entende **quality gates**, criticidade e decisão de bloquear/não bloquear conforme estratégia definida.
+
+---
+
+# E. IA aplicada à Qualidade
+
+Essa parte eu daria bastante importância.
+
+### 21. Geração de testes
+
+Você recebe uma história de usuário e pede para uma IA gerar os testes.
+
+Qual é a melhor conduta?
+
+**A)** Copiar todos os testes.  
+**B)** Considerar a resposta da IA como cobertura completa.  
+**C)** Revisar contra critérios, regras, riscos, integrações e contexto antes de aceitar.  
+**D)** Não utilizar IA para essa atividade.
+
+**Resposta:** C
+
+---
+
+### 22. Hallucination
+
+A IA sugere uma regra de negócio que não existe na história.
+
+O que fazer?
+
+**A)** Adicionar porque pode ser importante.  
+**B)** Validar a informação contra fonte confiável/contexto antes de utilizá-la.  
+**C)** Ignorar todas as respostas da IA.  
+**D)** Pedir para outra IA confirmar.
+
+**Resposta:** B
+
+---
+
+### 23. Prompt
+
+Qual prompt tende a produzir resultado melhor?
+
+**A)** "Crie testes."
+
+**B)**
+
+> "Considere os critérios de aceite abaixo. Identifique regras, riscos, dependências e gere cenários positivos, negativos e edge cases. Para cada cenário informe prioridade e justificativa."
+
+**Resposta:** B
+
+---
+
+### 24. IA + código
+
+A IA gera um script que funciona, mas possui código duplicado, sleeps fixos e credenciais hardcoded.
+
+O QA deveria:
+
+**A)** Aceitar porque funciona.  
+**B)** Revisar/refatorar antes de incorporar.  
+**C)** Solicitar mais testes à IA.  
+**D)** Colocar diretamente na pipeline.
+
+**Resposta:** B
+
+---
+
+### 25. Uso responsável
+
+Quais informações você considera antes de enviar conteúdo para uma ferramenta de IA?
+
+☑ Dados sensíveis  
+☑ Código proprietário  
+☑ Informações de clientes  
+☑ Política corporativa  
+☑ Ferramenta/modelo autorizado  
+☑ Necessidade de anonimização
+
+Todas são relevantes.
+
+---
+
+### 26. Agentic QA
+
+Um agente de IA consegue gerar testes, executar e produzir relatório.
+
+Qual deveria continuar sendo responsabilidade do profissional de qualidade?
+
+**Resposta aberta.**
+
+Esperado: estratégia, contexto, riscos, validação das saídas, decisões, critérios de qualidade, governança.
+
+---
+
+### 27. IA no cotidiano
+
+Pergunta aberta:
+
+> Cite **até três atividades reais** de qualidade nas quais você utilizaria IA e explique rapidamente como.
+
+Aqui não existe resposta única. Quero identificar maturidade de utilização.
+
+---
+
+### 28. Validação da IA
+
+> Cite uma situação em que você **não confiaria diretamente** na resposta de uma IA e explique como faria a validação.
+
+Essa pergunta é ótima para separar "usuário de ChatGPT" de alguém com **AI literacy**.
+
+---
+
+# BLOCO 2 — Desafio prático de Automação
+
+**Tempo: 45–60 minutos.**
+
+Eu criaria uma pequena aplicação Web/API controlada pelo Quick Scan.
+
+## Contexto
+
+> Você integra o time responsável por uma aplicação de pagamentos.
+>
+> O usuário consegue autenticar-se, consultar saldo e realizar uma transferência.
+
+Entregamos:
+
+- URL;
+- documentação básica da API;
+- credenciais fictícias;
+- história;
+- critérios de aceite.
+
+### História
+
+> Como cliente autenticado, quero transferir um valor para outra conta para realizar pagamentos.
+
+Critérios:
+
+1. Usuário precisa estar autenticado.
+2. Conta destino deve existir.
+3. Valor precisa ser maior que zero.
+4. Transferência não pode superar o saldo.
+5. Operação válida deve atualizar o saldo.
+6. Operação deve gerar comprovante.
+
+---
+
+## Desafio 1 — Estratégia
+
+Antes de programar:
+
+> Liste os cenários que você considera necessários e indique quais automatizaria em **API**, **UI** ou outra camada.
+
+**10 minutos.**
+
+Isso é extremamente importante: quero avaliar primeiro **como pensa**, não quanto código consegue escrever.
+
+---
+
+## Desafio 2 — Automação
+
+> Escolha os cenários que considera prioritários e implemente a automação dentro do tempo disponível.
+
+Não obrigaria uma quantidade.
+
+Isso gera outro indicador interessante:
+
+**capacidade de priorização.**
+
+---
+
+## Desafio 3 — Qualidade da solução
+
+Solicitar:
+
+> Organize a solução como faria em um projeto real, considerando reutilização, dados, assertions e manutenibilidade.
+
+---
+
+## Rubrica automática/manual
+
+| Critério | Peso |
+|---|---:|
+| Estratégia/priorização | 15% |
+| Funcionamento | 20% |
+| Assertions | 10% |
+| Arquitetura | 15% |
+| Reuso | 10% |
+| Massa/dados | 10% |
+| Sincronização/robustez | 5% |
+| Legibilidade | 5% |
+| Evidências/report | 5% |
+| README/explicação | 5% |
+
+---
+
+# BLOCO 3 — Desafio de IA
+
+Aqui eu faria algo diferente.
+
+**Eu obrigaria o uso de IA.**
+
+## Desafio
+
+O QA recebe uma história deliberadamente incompleta:
+
+> Como cliente, quero cadastrar uma nova chave PIX para receber transferências.
+
+E recebe alguns critérios básicos.
+
+### Tarefa 1
+
+> Utilize uma ferramenta de IA para analisar a história e gerar uma estratégia de testes.
+
+---
+
+### Tarefa 2
+
+> Apresente o prompt utilizado.
+
+---
+
+### Tarefa 3
+
+> Das sugestões da IA:
+>
+> - quais você aceitou?
+> - quais descartou?
+> - quais precisariam ser validadas com negócio/desenvolvimento?
+
+---
+
+### Tarefa 4
+
+Entregamos propositalmente uma resposta problemática da IA, por exemplo:
+
+> "Uma chave PIX de CPF pode pertencer simultaneamente a contas de bancos diferentes."
+
+Pergunta:
+
+> Você incorporaria esse cenário? Explique sua decisão e como validaria a informação.
+
+O objetivo não é saber PIX. É verificar se a pessoa **questiona uma afirmação não fundamentada**.
+
+---
+
+### Tarefa 5 — melhoria de código
+
+Fornecemos:
+
+```python
+def test_pix():
+    driver.get("https://app")
+    driver.find_element("id","user").send_keys("123")
+    driver.find_element("id","password").send_keys("123")
+    driver.find_element("id","login").click()
+    time.sleep(10)
+    driver.find_element("id","pix").click()
+    driver.find_element("id","key").send_keys("123456789")
+    driver.find_element("id","save").click()
+```
+
+Solicitação:
+
+> Utilize IA para propor melhorias neste código. Depois revise a resposta da IA e informe **quais mudanças você aceitaria e quais não aceitaria**.
+
+Aqui avaliamos simultaneamente **IA + automação + code review**.
+
+---
+
+# Resultado do Quick Scan
+
+Eu evitaria uma média simples.
+
+Geraria estes cinco indicadores:
+
+| Indicador | Resultado |
+|---|---:|
+| **Quality Fundamentals** | 0–100 |
+| **Automation Readiness** | 0–100 |
+| **Engineering Readiness** | 0–100 |
+| **AI Readiness** | 0–100 |
+| **Delivery Readiness** | 0–100 |
+
+E o **Quick Scan Score**.
+
+### Classificação inicial sugerida
+
+**80–100 → Alto**  
+Pode atuar com autonomia e potencialmente habilitar outros.
+
+**60–79 → Médio**  
+Apto, porém com gaps específicos que entram no plano de habilitação.
+
+**0–59 → Baixo**  
+Gap técnico relevante; avaliar habilitação intensiva, mudança de atuação ou substituição.
+
+Eu ainda criaria um **gate mínimo de Automação**. Por exemplo, alguém não deveria ser classificado como `Alto` apenas porque teve notas excelentes em IA e conceitos se o desafio prático mostrar baixa capacidade de automação.
+
+---
+
+## E acrescentaria uma classificação muito útil
+
+Além de **Baixo / Médio / Alto**, o sistema identificaria o **perfil predominante**:
+
+**Automation Specialist** — forte em implementação.
+
+**AI-Enabled QE** — forte combinação Automação + IA.
+
+**Quality Engineer** — equilibrado.
+
+**Quality Analyst** — forte em qualidade, gap em engenharia/automação.
+
+**Emerging QE** — demonstra potencial, mas precisa de habilitação.
+
+**Technical Enabler** — Alto em Automação + Engenharia + IA e potencial para **habilitar outros profissionais**.
+
+Isso vai ser muito mais útil para você e para os Accelerates do que simplesmente dizer que determinado QA tirou **76%**.
+
+E eu **não colocaria todas as 28 questões sempre para todos**. No portal, manteria esse banco e sortearia algo como **18–20 questões + os dois desafios**, preservando comparabilidade entre os profissionais sem deixar o assessment previsível.

@@ -1,0 +1,29 @@
+Criei os **dois portais em HTML como MVP navegável**, já separados pelas duas jornadas.
+
+**1. Portal Quality Engineering Quick Scan** — destinado ao QA. Estruturei a experiência com contexto, assessment técnico, Automação, Engenharia, IA e desafio prático. O desenho já considera que o profissional **pode utilizar IA**, mas precisa explicar como utilizou e quais respostas/sugestões rejeitou.
+
+:chatgpt-content-reference{index="1"}[**Abrir/Baixar Portal Quick Scan**](sandbox:/mnt/data/quickscan_portals/quickscan.html)
+
+**2. Portal Quick Scan Analytics** — destinado a você, liderança NTT e gestores. Ele consolida **Scan anterior x Quick Scan**, Automation Readiness, AI Readiness, Engenharia, CI/CD/Massa, classificação individual e recomendação de **Manter / Habilitar / Reavaliar / Substituir**. Também comecei a trazer a visão por coordenação, incluindo recomendação para o Accelerate Team.
+
+:chatgpt-content-reference{index="2"}[**Abrir/Baixar Portal de Análise**](sandbox:/mnt/data/quickscan_portals/results.html)
+
+QuickScan_Portais_MVP.zip[**Baixar os dois portais em ZIP**](sandbox:/mnt/data/quickscan_portals/QuickScan_Portais_MVP.zip)
+
+### Como eu evoluiria daqui
+
+A estrutura que criei é o **MVP visual/funcional local**. Ainda não há backend: os dados exibidos são demonstrativos e o botão do assessment simula o registro.
+
+Na próxima evolução, eu transformaria isso em uma aplicação única com dois perfis:
+
+**QA → Quick Scan → desafio → submissão → avaliação assistida por IA**
+
+**Líder NTT → Dashboard → Gerência → Coordenação → QA → Scan x Quick Scan → evidências → recomendação → decisão do gestor**
+
+E adicionaria uma terceira dimensão muito importante para os **2 Accelerates**:
+
+**Coordenação → Squad → Stack → Regressivo → % automatizado → gaps → massa → pipeline → oportunidades de IA → backlog de aceleração → habilitação.**
+
+Isso conecta os dois trabalhos paralelos que você descreveu: enquanto o **Líder faz Foto + Quick Scan + análise de pessoas**, os **2 Accelerates fazem diagnóstico técnico e constroem o plano de aceleração**. A proposta já prevê para esse time atividades de priorização, regressivo, massas, scripts, pipeline e habilitação. NTT DATA - Proposta Técnica e C…
+
+Eu faria essa próxima versão já como um **mini sistema de gestão do projeto**, em vez de continuar criando páginas isoladas.

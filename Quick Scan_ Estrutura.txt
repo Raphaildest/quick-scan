@@ -1,0 +1,145 @@
+Eu não faria o Quick Scan como uma nova autoavaliação simples. Como o objetivo agora é tomar decisões de manter, desenvolver ou substituir e direcionar a aceleração, ele precisa produzir uma evidência mais objetiva de capacidade técnica. Isso é coerente com a proposta, que prevê confirmar a aptidão dos profissionais e classificar conhecimento em Baixo, Médio e Alto. NTT DATA - Proposta Técnica e C…
+Minha sugestão é um Quick Scan híbrido, digital e assistido por IA, que consiga avaliar muitos QAs sem entrevistar todos.
+Modelo que eu recomendo
+Etapa	Como avaliar	Tempo por QA	Peso sugerido
+1. Assessment objetivo	Forms/site com questões técnicas e situacionais	20–25 min	25%
+2. Desafio prático	Pequeno problema real de automação	45–60 min	45%
+3. IA aplicada	Desafio de uso de IA no contexto de QA	20–30 min	20%
+4. Evidências atuais	Stack, automações existentes, Git/repositórios, experiência	5–10 min	10%
+Entrevista	Somente para casos inconclusivos	20–30 min	Gate
+Isso elimina a necessidade de entrevistar 100% das pessoas.
+1. Assessment: não perguntar "quanto você sabe?"
+Evitaria perguntas como:
+	"De 1 a 5, qual seu conhecimento em Robot Framework?"
+Isso reproduziria o principal problema de uma autoavaliação.
+Eu usaria questões situacionais. Por exemplo:
+Automação
+"Uma suíte possui 300 testes E2E e leva 4 horas na pipeline. O que você avaliaria antes de simplesmente paralelizar a execução?"
+E apresentar alternativas envolvendo pirâmide de testes, redundância, criticidade, dependências, massa, API etc.
+Outras questões podem mostrar um trecho de código e perguntar:
+	• Qual problema existe?
+	• Por que o teste está instável?
+	• Como você refatoraria?
+	• Onde colocaria esse teste: API, UI ou unitário?
+	• Como estruturaria massa?
+	• Como integraria à pipeline?
+Assim você mede raciocínio de engenharia, não memória de ferramenta.
+Eu dividiria o questionário em cinco dimensões:
+Fundamentos QA | Automação | Código/Engenharia | CI/CD & Massa | IA aplicada à Qualidade
+
+2. O diferencial: desafio prático curto
+Aqui estaria a maior evidência.
+Em vez de pedir uma automação grande, disponibilizaria uma aplicação simples e igual para todos.
+Exemplo:
+	"Automatize o fluxo de login + consulta + validação de resultado desta aplicação."
+O candidato pode escolher entre algumas stacks previamente aceitas, por exemplo Python/Robot, Playwright/JS, Selenium etc.
+Entregaria:
+	• URL da aplicação;
+	• história/critério de aceite;
+	• algumas regras;
+	• acesso a um repositório;
+	• prazo de aproximadamente 60 minutos.
+E avaliaria automaticamente ou semiautomaticamente:
+Critério	Avaliação
+Automação funciona	25%
+Estrutura/manutenibilidade	20%
+Estratégia de testes	15%
+Reuso	10%
+Assertions	10%
+Tratamento de dados/massa	10%
+Evidências/report	5%
+README/clareza	5%
+Isso permite distinguir muito melhor alguém que conhece conceitos de alguém que realmente consegue automatizar.
+
+3. Colocaria IA dentro da própria avaliação
+Aqui acho que existe uma oportunidade muito interessante para o projeto.
+Eu permitiria explicitamente usar IA no desafio.
+Copilot, ChatGPT ou outra ferramenta autorizada.
+Porque o objetivo não deveria ser descobrir quem programa sem IA. O projeto quer descobrir quem consegue trabalhar no modelo:
+QA + Engenharia + Automação + IA.
+Você poderia dar uma segunda tarefa:
+	"Utilizando IA, analise esta história e proponha cenários de teste, riscos, estratégia de automação e implemente pelo menos um cenário."
+Depois:
+	"Explique quais sugestões da IA você aceitou, quais rejeitou e por quê."
+Isso mede algo muito mais relevante: capacidade de direcionar, revisar e validar a IA.
+Inclusive está alinhado à proposta, que prevê Quality Agents para análise de histórias, geração de casos, automação, execução e reports. NTT DATA - Proposta Técnica e C…
+
+4. Usaria IA também para corrigir o Quick Scan
+Aqui está onde você consegue escala.
+Eu montaria um Quick Scan Portal simples:
+QA acessa → responde assessment → recebe desafio → envia Git/ZIP → IA analisa → dashboard consolida → líder revisa exceções.
+A IA poderia fazer uma primeira análise do código considerando uma rubrica definida por vocês:
+	• organização;
+	• boas práticas;
+	• reutilização;
+	• assertions;
+	• waits;
+	• hardcode;
+	• page objects/components;
+	• tratamento de massa;
+	• logs;
+	• evidências;
+	• qualidade do código;
+	• estratégia escolhida.
+Mas eu não deixaria a IA tomar sozinha a decisão de apto/inapto. Ela gera evidências e score; o Líder NTT faz a validação dos casos críticos.
+Isso transforma centenas de revisões manuais em algo administrável.
+
+5. Resultado: Skill Radar individual
+Em vez de apenas "Apto/Inapto", cada QA receberia algo assim:
+Dimensão	Score
+Fundamentos de Qualidade	82%
+Automação	76%
+Coding/Engenharia	68%
+CI/CD	55%
+Massa de Dados	71%
+IA aplicada	88%
+Score geral	74%
+E uma classificação:
+Alto — apto para atuar e potencialmente habilitar outros
+Médio — apto, mas requer habilitação direcionada
+Baixo — gap relevante / avaliar treinamento ou substituição
+Isso conversa diretamente com a classificação Baixo/Médio/Alto prevista na proposta. NTT DATA - Proposta Técnica e C…
+
+6. E cruzaria com o Scan antigo
+Aqui nasce uma análise muito boa para apresentar aos gerentes.
+Não substituiria o Scan pelo Quick Scan. Criaria uma matriz:
+Scan anterior	Quick Scan	Interpretação
+Alto	Alto	Confirmado
+Médio	Alto	Evolução
+Baixo	Alto	Evolução relevante
+Alto	Baixo	Divergência – investigar
+Médio	Médio	Confirmado
+Baixo	Baixo	Gap confirmado
+Não avaliado	Alto/Médio/Baixo	Nova avaliação
+Apenas os casos de divergência, resultados limítrofes ou situações estratégicas iriam para entrevista.
+Então a entrevista deixa de ser etapa obrigatória e vira um gate de exceção.
+
+7. E conectaria o resultado diretamente ao Accelerate Team
+Essa é a parte que acho que melhora bastante seu projeto.
+Enquanto o Líder NTT executa:
+Foto da estrutura → Quick Scan → comparação Scan → análise → gestores → decisão
+os 2 Accelerates não ficam esperando.
+Eles trabalham simultaneamente:
+Squads prioritárias → stack → regressivo → automação existente → gaps → massas → pipeline → oportunidades de IA → backlog de aceleração.
+Quando o Líder chega para o gestor, ele não apresenta apenas:
+	"Tenho 4 QAs com conhecimento médio."
+Ele consegue apresentar algo muito mais acionável:
+	Squad X
+	Ratio: 1 QA : 2 DEVs
+	4 QAs avaliados
+	1 Alto / 2 Médios / 1 Baixo
+	Automação atual: 35%
+	Principal gap: API + massa
+	Oportunidade IA: geração de CT + manutenção de regressivo
+	Recomendação: manter 3, habilitar 2, substituir/reavaliar 1 e executar plano de aceleração.
+Isso junta pessoas + estrutura + automação + IA em uma única decisão.
+A própria proposta posiciona o Accelerate Team para priorizar sistemas, mapear regressivos, priorizar casos e massas, gerar automações, disponibilizar em pipeline e habilitar os times. NTT DATA - Proposta Técnica e C…
+Arquitetura que eu escolheria
+Para o MVP, eu não começaria desenvolvendo um sistema complexo.
+Começaria com:
+Microsoft Forms/Power Apps → desafio prático → Git → Power Automate → análise assistida por IA → SharePoint/Excel → Power BI
+Depois, se o modelo provar valor nas primeiras 8 coordenações, dá para evoluir para um portal próprio de Quick Scan, com login, desafios, scoring automático e dashboard.
+E eu daria um nome ao processo, por exemplo Quality Engineering Quick Scan, com três scores principais:
+Automation Readiness | AI Readiness | Engineering Readiness
+Isso deixa de parecer uma "prova para decidir quem sai" e passa a ser um assessment de capacidade para direcionar evolução e composição dos times, que tende a ser muito mais saudável para conduzir com os gestores.
+Com esse desenho, eu também mudaria bastante o cronograma que fiz anteriormente: o Líder e os 2 Accelerates passam a ter trilhas paralelas, com pontos de sincronização por coordenação/onda, em vez de uma sequência única de atividades.
